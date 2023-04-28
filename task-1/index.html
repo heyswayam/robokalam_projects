@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <nav class=" w-full border mt-4 border-gray-400 ">
+        <div class="flex items-center justify-between gap-4 lg:gap-10 mx-auto p-4 w-4/12 ">
+            <a class="text-gray-500 font-medium font-sans hover:drop-shadow-md" href="">Home</a>
+            <a class="text-gray-500 font-medium font-sans hover:drop-shadow-md" href="">About</a>
+            <a class="text-gray-500 font-medium font-sans hover:drop-shadow-md" href="">Videos</a>
+            <a class="text-gray-500 font-medium font-sans hover:drop-shadow-md" href="">Contact</a>
+        </div>
+    </nav>
+    <div class="my-5 grid grid-cols-4">
+
+        <div
+            class="relative md:w-11/12 md:h-[35vw] h-80 border-2 border-gray-400 drop-shadow-md  shadow-sm justify-self-center col-span-3">
+            <div class="absolute inset-0 flex justify-center items-center bg-no-repeat bg-contain w-9/12 mx-auto my-8"
+                style="background-image: url('https://media.istockphoto.com/id/836180382/vector/clean-school-board-with-chalk-and-sponge.jpg?s=612x612&w=0&k=20&c=uECgQzKjN-NjV-kJoqhjkBX1WRh13vt_r2lhuuAZ9Ro=')            ">
+
+                <button id="submit-button"
+                    class="rounded-md bg-green-600 px-3.5 py-1.5 text-base font-semibold leading-7 text-white hover:bg-green-500">
+                    <p>
+                        Start Watching
+                    </p>
+                    <p class="text-xs ">
+                        (demo button)
+                    </p>
+                </button>
+
+                <button id="stop-button"
+                    class="absolute top-0 right-0 m-4 bg-red-500 text-white font-bold py-2 px-4 rounded focus:outline-none hidden">Stop</button>
+            </div>
+        </div>
+        <div class=" w-full mx-3 flex flex-col h-[86vh] border-gray-400 border-2 justify-self-end p-3">
+            <div class=" h-full flex">
+                <!-- chat input box -->
+                <div class=" border-b-2 -translate-y-6 border-gray-200 px-4 pb-4  sm:mb-0 w-full self-end">
+                    <div class="relative flex h-[5vh]">
+                       <input type="text" placeholder="Write your message!" class="text-start w-full focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 pl-5 bg-gray-200 rounded-md py-3 shadow-md">
+                       <div class="absolute right-0 items-center inset-y-0 hidden sm:flex">
+                          <button type="button" class="inline-flex items-center justify-center  rounded-lg px-2 py-2 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none">
+                             <span class="font-bold text-sm">Send</span>
+                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-6 w-6 ml-2 transform rotate-90">
+                                <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path>
+                             </svg>
+                          </button>
+                       </div>
+                    </div>
+                 </div>
+            </div>
+            <div class="grid grid-cols-4 content-start h-fit ">
+                <div class="w-full px-4 col-span-3 self-end mb-5 flex flex-col">
+
+                    <video id="user-video"   class="border border-red-300 self-center w-11/12 h-[10vw]"></video>
+                    <div class="w-10/12 pt-4 grid grid-cols-2 gap-3 self-center">
+                        <button onclick="startFacecam() "
+                            class=" rounded-md bg-sky-600 px-1.5 py-0.5 text-xs font-semibold leading-7 text-white hover:bg-sky-600/90 shadow-md hover:scale-105 transition-all">Start
+                            Facecam</button>
+                        <button onclick="stopFacecam() "
+                            class="rounded-md bg-sky-600 px-1.5 py-0.5 text-xs font-semibold leading-7 text-white hover:bg-sky-600/90 shadow-md hover:scale-105 transition-all">Stop
+                            Facecam</button>
+                    </div>
+                </div>
+                <div class="reactions grid grid-rows-4  justify-self-end shadow-md mr-3">
+                    <img class="w-[2rem] py-3 hover:scale-125 hover:shadow-md rounded-lg"
+                        src="/assets/clapping-hands.png" alt="" srcset="">
+                    <img class="w-[2rem] py-3 hover:scale-125 hover:shadow-md rounded-lg" src="/assets/fire.png" alt=""
+                        srcset="">
+                    <img class="w-[2rem] py-3 hover:scale-125 hover:shadow-md rounded-lg" src="/assets/party-popper.png"
+                        alt="" srcset="">
+                    <img class="w-[2rem] py-3 hover:scale-125 hover:shadow-md rounded-lg" src="/assets/raised-hand.png"
+                        alt="" srcset="">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function startFacecam() {
+            const userVideo = document.getElementById("user-video");
+            const constraints = { video: true };
+            try {
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                userVideo.srcObject = stream;
+                userVideo.play();
+            } catch (error) {
+                console.error("Error accessing user media: ", error);
+            }
+        }
+
+        function stopFacecam() {
+            const userVideo = document.getElementById("user-video");
+            if (stream) {
+                const tracks = stream.getTracks();
+                tracks.forEach(track => track.stop());
+                stream = null;
+                userVideo.srcObject = null;
+            }
+        }
+
+    </script>
+</body>
+
+</html>
